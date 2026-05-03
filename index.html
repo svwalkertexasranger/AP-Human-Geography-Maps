@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AP Human Geography Maps</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>AP Human Geography Maps</h1>
+      <p>Interactive study maps, regions, religions, belts, and quiz practice.</p>
+    </div>
+    <div class="action-row">
+      <button id="popOutBtn" class="pop-out flashing" type="button">Pop Out</button>
+      <button id="startBtn" class="start" type="button">Start</button>
+    </div>
+  </header>
+
+  <nav class="viewbar" aria-label="Map selector">
+    <label for="viewSelect">Map / Quiz</label>
+    <select id="viewSelect">
+      <option value="base">Opening Base Map</option>
+      <option value="continents">Continents Map</option>
+      <option value="continentsQuiz">Continents Quiz</option>
+      <option value="regions">AP Human Geography Regions</option>
+      <option value="regionsQuiz">Regions Quiz</option>
+      <option value="religion">Religion Map</option>
+      <option value="religionQuiz">Religions Quiz</option>
+      <option value="usBase">US Base Map</option>
+      <option value="usBelts">US Belts Map</option>
+      <option value="usBeltsQuiz">US Belts Quiz</option>
+      <option value="usReligion">US Religion Map</option>
+      <option value="usReligionQuiz">US Religion Map Quiz</option>
+      <option value="types">Types of Maps</option>
+      <option value="typesQuiz">Types of Maps Quiz</option>
+    </select>
+  </nav>
+
+  <main id="app" class="layout"></main>
+  <div id="effects" aria-hidden="true"></div>
+  <div id="imageModal" class="image-modal" aria-hidden="true">
+    <div class="image-modal-inner" role="dialog" aria-modal="true" aria-label="Map image preview">
+      <button id="imageModalClose" class="image-modal-close" type="button" aria-label="Close image preview">×</button>
+      <img id="imageModalImg" alt="">
+      <h2 id="imageModalTitle"></h2>
+    </div>
+  </div>
+  <script src="vendor/d3.min.js"></script>
+  <script src="vendor/topojson-client.min.js"></script>
+  <script src="data/atlases.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

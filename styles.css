@@ -1,0 +1,488 @@
+:root {
+  --water: #c9ecf7;
+  --deep-water: #83c9df;
+  --ink: #17202c;
+  --muted: #516173;
+  --panel: #fbfdff;
+  --line: #bfd4df;
+  --good: #128447;
+  --bad: #c92a2a;
+  --gold: #f5b942;
+  --shadow: 0 18px 42px rgba(29, 54, 70, .16);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background:
+    linear-gradient(rgba(255,255,255,.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.28) 1px, transparent 1px),
+    var(--water);
+  background-size: 34px 34px;
+}
+
+button, select {
+  font: inherit;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px clamp(16px, 4vw, 42px);
+  background: rgba(251, 253, 255, .92);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3.5vw, 3rem);
+  letter-spacing: 0;
+}
+
+.topbar p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  max-width: 680px;
+}
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.pop-out, .start, .choice, .more, .map-card button {
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.pop-out {
+  color: #fff;
+  background: #d10000;
+  padding: 14px 22px;
+  box-shadow: 0 0 0 0 rgba(209, 0, 0, .8);
+  transform: scale(1.05);
+}
+
+.pop-out.flashing {
+  animation: flashRed .7s infinite alternate;
+}
+
+.pop-out.stopped {
+  animation: none;
+  box-shadow: none;
+  filter: saturate(.8);
+}
+
+@keyframes flashRed {
+  from { background: #d10000; box-shadow: 0 0 0 0 rgba(209, 0, 0, .8); }
+  to { background: #ff3434; box-shadow: 0 0 24px 10px rgba(255, 52, 52, .55); }
+}
+
+.start {
+  color: #fff;
+  background: var(--good);
+  padding: 14px 22px;
+}
+
+.viewbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px clamp(16px, 4vw, 42px);
+  background: rgba(238, 249, 253, .92);
+  border-bottom: 1px solid var(--line);
+}
+
+.viewbar select {
+  min-width: min(430px, 100%);
+  border: 1px solid #9cc6d7;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: 18px;
+  padding: 20px clamp(16px, 4vw, 42px) 34px;
+}
+
+.map-panel, .side-panel, .tile-panel {
+  background: rgba(251, 253, 255, .9);
+  border: 1px solid rgba(91, 130, 146, .35);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.map-panel {
+  padding: 14px;
+  min-height: 560px;
+}
+
+.side-panel {
+  padding: 16px;
+  align-self: start;
+  position: sticky;
+  top: 116px;
+}
+
+.side-panel h2, .map-panel h2 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+}
+
+.side-panel p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.map-svg {
+  width: 100%;
+  min-height: 520px;
+  height: min(68vh, 680px);
+  display: block;
+  background:
+    radial-gradient(circle at 16% 35%, rgba(255,255,255,.36), transparent 24%),
+    radial-gradient(circle at 84% 55%, rgba(255,255,255,.26), transparent 24%),
+    var(--water);
+  border-radius: 8px;
+  border: 1px solid rgba(87, 132, 151, .25);
+}
+
+.map-svg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.land, .target {
+  stroke: rgba(18, 32, 46, .55);
+  stroke-width: 1.6;
+  cursor: pointer;
+  transition: filter .15s ease, transform .15s ease;
+  transform-origin: center;
+  paint-order: stroke;
+}
+
+.land:hover, .target:hover {
+  filter: brightness(1.08) saturate(1.12);
+}
+
+.ocean-target,
+.ocean-target:hover {
+  stroke: none;
+  filter: none;
+}
+
+.label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: #172231;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.small-label {
+  font-size: 10px;
+  font-weight: 700;
+  fill: #172231;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.cross-label {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.ocean-label {
+  fill: #12657f;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.ocean-label.arcticOcean {
+  font-size: 13px;
+}
+
+.map-note {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.teacher-note {
+  margin: 12px 0;
+  padding: 10px;
+  border-left: 4px solid #1d6fd8;
+  background: #eef8fb;
+  color: #274154;
+  font-size: .92rem;
+  line-height: 1.4;
+}
+
+.graticule {
+  fill: none;
+  stroke: rgba(34, 120, 145, .24);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.island {
+  fill: #eef4d7;
+  stroke: rgba(18, 32, 46, .42);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.coast-shadow {
+  filter: drop-shadow(0 5px 4px rgba(26, 58, 75, .13));
+}
+
+.legend-list, .choice-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.legend-item, .choice {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,.96);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.choice.selected {
+  outline: 3px solid #1d6fd8;
+}
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  border: 1px solid rgba(0,0,0,.22);
+  border-radius: 4px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.stat {
+  background: #eef8fb;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px;
+}
+
+.stat b {
+  display: block;
+  font-size: 1.15rem;
+}
+
+.feedback {
+  min-height: 40px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #eef8fb;
+  border: 1px solid var(--line);
+  margin-top: 10px;
+}
+
+.feedback.good { border-color: #7bc69c; color: #0f6d3c; }
+.feedback.bad { border-color: #e99; color: #9a1f1f; }
+
+.tile-panel {
+  padding: 18px;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.map-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.map-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(28, 41, 56, .14);
+}
+
+.map-card.selected {
+  outline: 3px solid #283dce;
+}
+
+.map-card figure {
+  margin: 0;
+  height: 150px;
+  background: #eaf5f8;
+  display: grid;
+  place-items: center;
+}
+
+.map-card svg,
+.map-card img {
+  width: 100%;
+  height: 100%;
+}
+
+.map-card img {
+  display: block;
+  object-fit: cover;
+}
+
+.map-card h3 {
+  margin: 10px 12px 4px;
+  font-size: 1rem;
+}
+
+.map-card p {
+  margin: 0 12px 14px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.more {
+  display: inline-block;
+  color: #fff;
+  background: #283dce;
+  padding: 10px 13px;
+  text-decoration: none;
+}
+
+.image-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  background: rgba(15, 28, 38, .72);
+  z-index: 40;
+}
+
+.image-modal.open {
+  display: grid;
+}
+
+.image-modal-inner {
+  position: relative;
+  width: min(980px, 94vw);
+  max-height: 92vh;
+  padding: 14px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .35);
+}
+
+.image-modal-inner img {
+  display: block;
+  width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  background: #eef8fb;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.image-modal-inner h2 {
+  margin: 10px 42px 0 0;
+  font-size: 1.05rem;
+}
+
+.image-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: #17202c;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.religion-symbol {
+  font-size: 18px;
+}
+
+.religion-map-label.christianity-label {
+  font-size: 20px;
+}
+
+#effects {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.fall {
+  position: absolute;
+  top: -40px;
+  font-size: 26px;
+  animation: fall 1.7s linear forwards;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(320deg); opacity: .9; }
+}
+
+@media (max-width: 880px) {
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-panel {
+    min-height: 440px;
+  }
+
+  .map-svg {
+    min-height: 420px;
+    height: 58vh;
+  }
+}
